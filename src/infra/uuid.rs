@@ -6,14 +6,14 @@ pub struct Uuid {
 }
 
 impl TryFrom<String> for Uuid {
-    type Error = &'static str;
+    type Error = uuid::Error;
 
     fn try_from(value: String) -> Result<Self, Self::Error> {
         let result = uuid::Uuid::from_str(value.as_str());
 
         match result {
             Ok(uuid) => Ok(Self { value: uuid }),
-            Err(error) => Err("Failed to parse string into Uuid")
+            Err(error) => Err(error)
         }
     }
 }
