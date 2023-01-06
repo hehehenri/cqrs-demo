@@ -6,3 +6,15 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+uuid = "1.2.2"
+anyhow = "1.0.68"
+async-trait = "0.1.60"
+dotenv = "0.15.0"
+
+[dependencies.sqlx]
+version = "0.6.2"
+features = [ "runtime-tokio-rustls", "postgres" ]
+
+[dependencies.tokio]
+version = "1.23.1"
+features = [ "full" ]
