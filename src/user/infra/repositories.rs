@@ -17,20 +17,17 @@ impl PgRepository {
 }
 
 fn to_user(row: PgRow) -> Result<User> {
-    let id: String = row.try_get("id")?;
-
-    Ok(User {
-        id: Uuid::try_from(id)?,
-        first_name: row.try_get("first_name")?,
-        last_name: row.try_get("last_name")?,
-    })
+    Ok(User::new(
+        row.try_get("first_name")?,
+        row.try_get("first_name")?,
+    ))
 }
 
 #[async_trait]
 impl Repository for PgRepository {
     async fn create(&self, user: User) -> Result<()> {
         sqlx::query("INSERT INTO users (uuid, first_name, last_name) VALUES (?, ?, ?)")
-            .bind(user.uuid())
+            .bind(user.uuid().to_string())
             .bind(user.first_name())
             .bind(user.last_name())
             .execute(&self.pool).await?;
@@ -50,7 +47,7 @@ impl Repository for PgRepository {
         let rows = sqlx::query("SELECT * FROM users")
             .fetch_all(&self.pool).await?;
 
-        let mut users = Vec::default();
+        let mut users = Vec::with_capacity(rows.capacity());
 
         for row in rows {
             users.push(to_user(row)?)
@@ -61,7 +58,7 @@ impl Repository for PgRepository {
 
     async fn delete(&self, id: Uuid) -> Result<()> {
         sqlx::query("DELETE FROM users where id = ?")
-            .bind(id.to_string())
+            .bind(id.as_ref())
             .execute(&self.pool).await?;
 
         Ok(())

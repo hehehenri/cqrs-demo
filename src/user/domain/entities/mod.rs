@@ -10,21 +10,21 @@ pub struct User {
 impl User {
     pub fn new(first_name: String, last_name: String) -> Self {
         Self {
-            id: Uuid::new(),
+            id: Uuid::default(),
             first_name,
             last_name
         }
     }
 
-    pub fn uuid(&self) -> String {
-        self.id.to_string()
+    pub fn uuid(&self) -> Uuid {
+        self.id
     }
 
-    pub fn first_name(&self) -> String {
-        self.first_name
+    pub fn first_name(&self) -> &str {
+        self.first_name.as_str()
     }
 
-    pub fn last_name(&self) -> String {
-        self.last_name
+    pub fn last_name(&self) -> &str {
+        self.last_name.as_str()
     }
 }
