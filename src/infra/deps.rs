@@ -1,15 +1,13 @@
 use crate::user::domain::repositories::{Repository as UserRepository};
 use std::sync::Arc;
 
-pub struct State {
+pub struct Deps {
     repositories: Repositories
 }
 
-impl State {
+impl Deps {
     pub fn new(repositories: Repositories) -> Self {
-        Self {
-            repositories
-        }
+        Self { repositories }
     }
 }
 
